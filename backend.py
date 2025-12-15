@@ -1,5 +1,6 @@
 import streamlit as st
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_mongodb import MongoDBAtlasVectorSearch
@@ -7,6 +8,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.documents import Document
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
+
 
 MONGO_URI = st.secrets["mongodb+srv://mandymm28:<db_password>@ghw-ai-ml.01cpegu.mongodb.net/?appName=GHW-AI-ML"]
 DB_NAME = "vector_store_database"
