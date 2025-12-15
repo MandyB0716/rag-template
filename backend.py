@@ -10,7 +10,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
 
-MONGO_URI = st.secrets["mongodb+srv://mandymm28:<db_password>@ghw-ai-ml.01cpegu.mongodb.net/?appName=GHW-AI-ML"]
+MONGO_URI = st.secrets["MONGO_URI"]
 DB_NAME = "vector_store_database"
 COLLECTION_NAME = "embeddings_stream"
 ATLAS_VECTOR_SEARCH = "vector_index_ghw"
