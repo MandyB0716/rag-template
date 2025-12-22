@@ -1,14 +1,11 @@
 import streamlit as st
 from pymongo import MongoClient
-from pymongo.server_api import ServerApi
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_mongodb import MongoDBAtlasVectorSearch
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.documents import Document
-from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
-
 
 MONGO_URI = st.secrets["MONGO_URI"]
 DB_NAME = "vector_store_database"
@@ -52,4 +49,25 @@ def get_rag_response(query):
     return {
         "answer": answer, 
         "sources": docs
+    }
+
+def get_vectors_for_visualization(query):
+    vector_store = get_vector_store()
+    embeddings = vector_store.embeddings
+    query_vector = embeddings.embed_query(query)
+
+    retriever = vector_store.as_retriever(search_kwargs={"k": 5})
+    docs = retriever.invoke(query)
+
+    doc_data = []
+    for doc in docs:
+        vec = embeddings.embed_query(doc.page_content)
+        doc_data.append({
+            "content": doc.page_content,
+            "vector": vec,
+            "type": "Document"
+        })
+    return {
+        "query_vector": query_vector,
+        "docs": doc_data
     }
